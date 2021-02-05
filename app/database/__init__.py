@@ -37,7 +37,7 @@ def read(user_id):
         FROM user
         WHERE id = ?
         """
-    cursor = get_db().execute(query, (user_id,))
+    cursor = get_db().execute(query, (user_id))
     results = cursor.fetchall()
     cursor.close()
     return output_formatter(results)
@@ -54,7 +54,7 @@ def update(user_id, fields: dict):
             WHERE id = ?
             """ % field_string
     cursor = get_db()
-    cursor.execute(query, (user_id,))
+    cursor.execute(query, (user_id))
     cursor.commit()
     return True
 
@@ -66,10 +66,10 @@ def create(first_name, last_name, job_title):
                     first_name,
                     last_name,
                     job_title)
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?)
         """
     cursor = get_db()
-    last_row_id = cursor.execute(query, value_tuple).lastrowid
+    last_row_id = cursor.execute(query, value_tuple).last_row_id
     cursor.commit()
     return last_row_id
 

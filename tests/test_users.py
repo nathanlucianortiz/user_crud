@@ -21,6 +21,7 @@ def test_create():
 def test_update():
     sample = {"first_name": "Mary", "last_name": "Anne", "job_title": "Crew member"}
     resp = requests.put("http://127.0.0.1:5000/users/2", json=sample)
+    pprint(resp.json())
 
 if __name__ == "__main__":
     test_scan()
