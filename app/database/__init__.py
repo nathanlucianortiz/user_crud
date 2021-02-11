@@ -15,11 +15,9 @@ def output_formatter(results: tuple):
     out = {"body": []}
     for result in results:
         res_dict = {}
-        res_dict["id"] = result[0]
-        res_dict["first_name"] = result[1]
-        res_dict["last_name"] = result[2]
-        res_dict["job_title"] = result[3]
-        res_dict["active"] = result[4]
+        res_dict["first_name"] = result[0]
+        res_dict["last_name"] = result[1]
+        res_dict["job_title"] = result[2]
         out["body"].append(res_dict)
     return out
 
@@ -31,30 +29,30 @@ def scan():
     return output_formatter(results)
 
 
-def read(user_id):
+def read(user_last_name):
     query = """
         SELECT *
         FROM user
-        WHERE id = ?
+        WHERE last_name like ?
         """
-    cursor = get_db().execute(query, (user_id))
+    cursor = get_db().execute(query, (str(user_last_name)))
     results = cursor.fetchall()
     cursor.close()
     return output_formatter(results)
 
 
-def update(user_id, fields: dict):
+def update(user_last_name, fields: dict):
     field_string = ",".join(
                     "%s=\"%s\"" % (key, val)
                         for key, val 
                         in fields.items())
     query = """
-            UPDATE product
+            UPDATE user
             SET %s
-            WHERE id = ?
+            WHERE last_name = ?
             """ % field_string
     cursor = get_db()
-    cursor.execute(query, (user_id))
+    cursor.execute(query, (user_last_name))
     cursor.commit()
     return True
 
@@ -69,13 +67,13 @@ def create(first_name, last_name, job_title):
             VALUES (?, ?, ?)
         """
     cursor = get_db()
-    last_row_id = cursor.execute(query, value_tuple).last_row_id
+    last_row_last_name = cursor.execute(query, value_tuple).last_row_last_name
     cursor.commit()
-    return last_row_id
+    return last_row_last_name
 
 
-def delete(user_id):
-    query = "DELETE FROM user WHERE id=%s" % user_id
+def delete(user_last_name):
+    query = "DELETE FROM user WHERE last_name=%s" % user_last_name
     cursor = get_db()
     cursor.execute(query, ())
     cursor.commit()

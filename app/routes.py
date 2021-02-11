@@ -19,9 +19,9 @@ def get_all_users():
      out["messsage"] = "Success"
      return out
 
-@app.route("/users/<uid>")
-def get_one_user(uid):
-    out = read(int(uid))
+@app.route("/users/<last_name>")
+def get_one_user(last_name):
+    out = read(last_name)
     out["ok"] = True
     out["message"] = "Success"
     return out
@@ -29,18 +29,18 @@ def get_one_user(uid):
 @app.route("/users", methods=["POST"])
 def create_user():
     user_data = request.json
-    new_id = create(
+    new_user = create(
         user_data.get("first_name"),
         user_data.get("last_name"),
         user_data.get("job_title"),
     )
 
-    return {"ok": True, "message": "Success", "new_id": new_id}
+    return {"ok": True, "message": "Success", "new_user": new_user}
 
-@app.route("/users/<uid>", methods=["PUT"])
-def update_user(uid):
+@app.route("/users/<last_name>", methods=["PUT"])
+def update_user(last_name):
     user_data = request.json
-    out = update(int(uid), user_data)
+    out = update(last_name, user_data)
     return {"ok": out, "message": "Updated"}
 
 
